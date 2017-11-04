@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "648451938611",
+    "project_id": "english-for-baby-185010"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:648451938611:android:009a113df5ffc4c0",
+        "android_client_info": {
+          "package_name": "com.example.thevillain.mathforbaby"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "648451938611-nilmg10ptulripvdjlp4ubgj1q55h4p0.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "648451938611-uui98m8i695m5cgbr565io882mrc6s5v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.thevillain.mathforbaby",
+            "certificate_hash": "9ad60b6e6eaae0299952f9dac7fbcc3daf2d011a"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAk6qGq8JvOZPppDDn6cfAUgSJd2CbV7Fc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
