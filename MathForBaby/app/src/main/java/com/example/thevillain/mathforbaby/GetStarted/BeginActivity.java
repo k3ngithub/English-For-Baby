@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.thevillain.mathforbaby.MainActivity;
 import com.example.thevillain.mathforbaby.R;
 import com.example.thevillain.mathforbaby.SupportClass.MyFunctions;
+import com.example.thevillain.mathforbaby.mainfunction.UnitActivity;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -64,7 +65,9 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
         btnGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new executeLogin(BeginActivity.this).execute();
+                //new executeLogin(BeginActivity.this).execute();
+                Intent intent = new Intent(BeginActivity.this,UnitActivity.class);
+                startActivity(intent);
             }
         });
         txtSignip.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +85,7 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
                 .build();
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
                 .build();
 
     }
