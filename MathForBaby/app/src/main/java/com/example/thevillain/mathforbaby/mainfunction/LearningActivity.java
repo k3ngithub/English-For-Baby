@@ -2,9 +2,12 @@ package com.example.thevillain.mathforbaby.mainfunction;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 
 import com.baoyz.swipemenulistview.SwipeMenuListView;
@@ -108,6 +111,21 @@ public class LearningActivity extends AppCompatActivity {
             pg_dialog.dismiss();
             adapter = new ListAdapter(LearningActivity.this, R.layout.list_itemunit, ds_unit);
             lv_unit.setAdapter(adapter);
+
+           lv_unit.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+               @Override
+               public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                   String value = ds_unit.get(position).toString();
+
+                   Bundle bundle = new Bundle();
+                   String idsend = ds_unit.get(position).getId();
+                   //Toast.makeText(context, "A"+idsend, Toast.LENGTH_SHORT).show();
+                   bundle.putString("send",idsend);
+                   Intent intent = new Intent(LearningActivity.this, UnitActivity.class);
+                   intent.putExtra("bundlesend",bundle);
+                   startActivity(intent);
+               }
+           });
             super.onPostExecute(result);
         }
     }

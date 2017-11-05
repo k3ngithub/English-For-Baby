@@ -20,7 +20,9 @@ public class MyFunctions {
     String alluniturl=ip+"/webAPI_php/getallunit.php";
     String allexamurl=ip+"/webAPI_php/getallexam.php";
     //Get Title Unit
-    String titleuniturl=ip+"webAPI_php/gettitleunit.php";
+    String titleuniturl=ip+"/webAPI_php/gettitleunit.php";
+    //Get Detail Unit
+    String getunitdetailurl=ip+"/webAPI_php/getunitdetail.php";
     //Create
     String createuniturl=ip+"/webAPI_php/createunit.php";
     String createexam=ip+"/webAPI_php/createexam.php";
@@ -124,6 +126,14 @@ public class MyFunctions {
         //POST khong can doi so nen ta tao doi so rong
         List<NameValuePair> cacdoiso=new ArrayList<NameValuePair>();
         JSONObject jobj=jsonparser.getJSONFromUrl(titleuniturl, cacdoiso);
+        return jobj;
+    }
+    //Detail
+    public JSONObject getDetail(String id)
+    {
+        List<NameValuePair> cacdoiso = new ArrayList<NameValuePair>();
+        cacdoiso.add(new BasicNameValuePair("id",id));
+        JSONObject jobj = jsonparser.getJSONFromUrl(getunitdetailurl,cacdoiso);
         return jobj;
     }
     public JSONObject getAllExam()
