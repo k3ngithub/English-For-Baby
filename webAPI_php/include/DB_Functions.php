@@ -66,11 +66,20 @@
 				return false; //chua co user nay
 		}
 		
-			//ham ghi product vao database
-		public function storeProduct($name,$price,$image,$description){
-			$sql="insert into products
-			(name,price,image,description,create_date) values
-			('$name','$price','$image','$description',NOW())";
+			//ham ghi bai hoc vao database
+		public function storeUnit($unit_name,$unit_img,$lesson1_img,$lesson1,$lesson2_img,$lesson2,$lesson3_img,$lesson3){
+			$sql="insert into unit
+			(unit_name,unit_img,lesson1_img,lesson1,lesson2_img,lesson2,lesson3_img,lesson3) values
+			('$unit_name','$unit_img','$lesson1_img','$lesson1','$lesson2_img','$lesson2','$lesson3_img','$lesson3',NOW())";
+			$con=$this->db->connect();
+			$result=mysqli_query($con,$sql);
+			return $result;
+		}
+		//Exam 
+		public function storeExam($image,$questions,$answer1,$answer2,$resultans,$score){
+			$sql="insert into exam
+			(image,questions,answer1,answer2,resultans,score) values
+			('$image','$questions','$answer1','$answer2','$resultans','$score',NOW())";
 			$con=$this->db->connect();
 			$result=mysqli_query($con,$sql);
 			return $result;
@@ -78,35 +87,67 @@
 		
 		
 		//ham lay chi tiet san pham dua vao id
-		public function getProductDetail($id){
-			$sql="select * from products where id='$id'";
+		public function getUnitDetail($id){
+			$sql="select * from unit where id='$id'";
 			$con=$this->db->connect();
 			$result=mysqli_query($con,$sql);
 			return $result;
 		}
 
+
 	//ham lay tat ca cac san pham
-		public function getAllProducts(){
-			$sql="select * from products";
+		public function getAllUnit(){
+			$sql="select * from unit";
 			$con=$this->db->connect();
 			$result=mysqli_query($con,$sql);
 			return $result;
 		}
-		
-		public function updateProduct($id, $name, $price, $image, $description){
-			$sql="update products set name='$name',
-				price='$price',
-				image='$image',
-				description='$description',
+		//Exam getall
+		public function getAllExam(){
+			$sql="select * from exam";
+			$con=$this->db->connect();
+			$result=mysqli_query($con,$sql);
+			return $result;
+		}
+		//get Title Unit
+		public function getTitleUnit(){
+			$sql="select id, unit_name, unit_img from unit";
+			$con=$this->db->connect();
+			$result=mysqli_query($con,$sql);
+			return $result;
+		}
+
+		public function updateUnit($unit_name,$unit_img,$lesson1_img,$lesson1,$lesson2_img,$lesson2,$lesson3_img,$lesson3){
+			$sql="update unit set unit_name='$unit_name',
+				unit_img='$unit_img',
+				lesson1_img='$lesson1_img',
+				lesson1='$lesson1',
+				lesson2_img='$lesson2_img',
+				lesson2='$lesson2',
+				lesson3_img='$lesson3_img',
+				lesson3='$lesson3',
 				update_date=NOW() where id='$id'";
 			$con=$this->db->connect();
 			$result=mysqli_query($con,$sql);
 			return $result;
 		}
-		
-		//ham xoa mot san pham
-		public function deleteProduct($id){
-			$sql="delete from products where id='$id' ";
+		//Exam exam
+			public function updateExam($image,$questions,$answer1,$answer2,$resultans,$score){
+			$sql="update exam set image='$image',
+				questions='$questions',
+				answer1='$answer1',
+				answer2='$answer2',
+				resultans='$resultans',
+				score='$score',,
+				update_date=NOW() where id='$id'";
+			$con=$this->db->connect();
+			$result=mysqli_query($con,$sql);
+			return $result;
+		}
+
+		//ham xoa mot bai hoc
+		public function deleteUnit($id){
+			$sql="delete from unit where id='$id' ";
 			$con=$this->db->connect();
 			$result=mysqli_query($con,$sql);
 			
@@ -114,5 +155,16 @@
 			//anh huong boi cau lenh insert, update,delete
 			return mysqli_affected_rows($con);
 		}
+		//Exam delete
+		public function deleteExam($id){
+			$sql="delete from exam where id='$id' ";
+			$con=$this->db->connect();
+			$result=mysqli_query($con,$sql);
+			
+			//ham affected_rows tra ve so record bi
+			//anh huong boi cau lenh insert, update,delete
+			return mysqli_affected_rows($con);
+		}
+
 	}
 ?>

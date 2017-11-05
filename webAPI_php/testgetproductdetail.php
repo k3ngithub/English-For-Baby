@@ -1,5 +1,5 @@
 <body>
-<form id="form1" name="form1" method="post" action="getproductdetail.php">
+<form id="form1" name="form1" method="post" action="getunitdetail.php">
   <p>id 
     <input type="text" name="id" id="id" />
   </p>
