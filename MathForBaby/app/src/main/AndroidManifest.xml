@@ -46,7 +46,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".mainfunction.UnitActivity" />
-        <activity android:name=".mainfunction.ExamActivity"></activity>
+        <activity android:name=".mainfunction.ExamActivity" />
+        <activity android:name=".mainfunction.NewUnitActivity"></activity>
     </application>
 
 </manifest>

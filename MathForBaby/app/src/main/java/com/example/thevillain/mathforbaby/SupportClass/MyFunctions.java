@@ -13,14 +13,23 @@ import java.util.List;
 public class MyFunctions {
     JSONParser jsonparser;
 
-    private final String ip = "http://192.168.0.107";
+    private final String ip = "http://192.168.0.106";
     String loginurl=ip+"/webAPI_php/index.php";
     String registerurl=ip+"/webAPI_php/index.php";
-
-    String allproducturl=ip+"/webAPI_php/getallproducts.php";
-    String createproducturl=ip+"/webAPI_php/createproduct.php";
-    String updateproduct=ip+"/webAPI_php/updateproduct.php";
-    String deleteproduct=ip+"/webAPI_php/deleteproduct.php";
+    //Get All
+    String alluniturl=ip+"/webAPI_php/getallunit.php";
+    String allexamurl=ip+"/webAPI_php/getallexam.php";
+    //Get Title Unit
+    String titleuniturl=ip+"webAPI_php/gettitleunit.php";
+    //Create
+    String createuniturl=ip+"/webAPI_php/createunit.php";
+    String createexam=ip+"/webAPI_php/createexam.php";
+    //Update
+    String updateunit=ip+"/webAPI_php/updateunit.php";
+    String updateexam=ip+"/webAPI_php/updateexam.php";
+    //Deleta
+    String deleteunit=ip+"/webAPI_php/deleteunit.php";
+    String deleteexam=ip+"/webAPI_php/deleteexam.php";
 
     String login_tag="login";
     String register_tag="register";
@@ -101,43 +110,104 @@ public class MyFunctions {
         return jobj;
     }
 
-    public JSONObject getAllProducts()
+    //get all Unit
+    public JSONObject getAllUnit()
     {
         //POST khong can doi so nen ta tao doi so rong
         List<NameValuePair> cacdoiso=new ArrayList<NameValuePair>();
-        JSONObject jobj=jsonparser.getJSONFromUrl(allproducturl, cacdoiso);
+        JSONObject jobj=jsonparser.getJSONFromUrl(alluniturl, cacdoiso);
         return jobj;
     }
-
-    public JSONObject createProduct(String name,String price, String image,String description)
+    //getTitleUnit
+    public JSONObject getTitleUnit()
+    {
+        //POST khong can doi so nen ta tao doi so rong
+        List<NameValuePair> cacdoiso=new ArrayList<NameValuePair>();
+        JSONObject jobj=jsonparser.getJSONFromUrl(titleuniturl, cacdoiso);
+        return jobj;
+    }
+    public JSONObject getAllExam()
+    {
+        //POST khong can doi so nen ta tao doi so rong
+        List<NameValuePair> cacdoiso=new ArrayList<NameValuePair>();
+        JSONObject jobj=jsonparser.getJSONFromUrl(allexamurl, cacdoiso);
+        return jobj;
+    }
+    //CreateUnit
+    public JSONObject createUnit(String unit_name,String unit_img, String lesson1_img,String lesson1,String lesson2_img,String lesson2,String lesson3_img,String lesson3)
     {
         // tao cac doi so
         List<NameValuePair> cacdoiso = new ArrayList<NameValuePair>();
-        cacdoiso.add(new BasicNameValuePair("name", name));
-        cacdoiso.add(new BasicNameValuePair("price", price));
-        cacdoiso.add(new BasicNameValuePair("image", image));
-        cacdoiso.add(new BasicNameValuePair("description", description));
-        JSONObject jobj=jsonparser.getJSONFromUrl(createproducturl, cacdoiso);
+        cacdoiso.add(new BasicNameValuePair("unit_name", unit_name));
+        cacdoiso.add(new BasicNameValuePair("unit_img", unit_img));
+        cacdoiso.add(new BasicNameValuePair("lesson1_img", lesson1_img));
+        cacdoiso.add(new BasicNameValuePair("lesson1", lesson1));
+        cacdoiso.add(new BasicNameValuePair("lesson2_img", lesson2_img));
+        cacdoiso.add(new BasicNameValuePair("lesson2", lesson2));
+        cacdoiso.add(new BasicNameValuePair("lesson3_img", lesson3_img));
+        cacdoiso.add(new BasicNameValuePair("lesson3", lesson3));
+        JSONObject jobj=jsonparser.getJSONFromUrl(createuniturl, cacdoiso);
         return jobj;
     }
-
-    public JSONObject updateProduct(String id, String name, String price, String image, String description)
+    //CreateExam
+    public JSONObject createExam(String image,String questions, String answer1,String answer2,String resultans,String score)
+    {
+        // tao cac doi so
+        List<NameValuePair> cacdoiso = new ArrayList<NameValuePair>();
+        cacdoiso.add(new BasicNameValuePair("image", image));
+        cacdoiso.add(new BasicNameValuePair("questions", questions));
+        cacdoiso.add(new BasicNameValuePair("answer1", answer1));
+        cacdoiso.add(new BasicNameValuePair("answer2", answer2));
+        cacdoiso.add(new BasicNameValuePair("resultans", resultans));
+        cacdoiso.add(new BasicNameValuePair("score", score));
+        JSONObject jobj=jsonparser.getJSONFromUrl(createexam, cacdoiso);
+        return jobj;
+    }
+    //UpdateUnit
+    public JSONObject updateUnit(String id, String unit_name, String unit_img, String lesson1_img, String lesson1,String lesson2_img,String lesson2,String lesson3_img,String lesson3)
     {
         List<NameValuePair> productOjb = new ArrayList<NameValuePair>();
         productOjb.add(new BasicNameValuePair("id", id));
-        productOjb.add(new BasicNameValuePair("name", name));
-        productOjb.add(new BasicNameValuePair("price", price));
+        productOjb.add(new BasicNameValuePair("unit_name", unit_name));
+        productOjb.add(new BasicNameValuePair("unit_img", unit_img));
+        productOjb.add(new BasicNameValuePair("lesson1_img", lesson1_img));
+        productOjb.add(new BasicNameValuePair("lesson1", lesson1));
+        productOjb.add(new BasicNameValuePair("lesson2_img", lesson2_img));
+        productOjb.add(new BasicNameValuePair("lesson2", lesson2));
+        productOjb.add(new BasicNameValuePair("lesson3_img", lesson3_img));
+        productOjb.add(new BasicNameValuePair("lesson3", lesson3));
+        JSONObject jobj=jsonparser.getJSONFromUrl(updateunit, productOjb);
+        return jobj;
+    }
+    //UpdateExam
+    public JSONObject updateExam(String id, String image, String questions, String answer1, String answer2,String resultans,String score,String lesson3_img,String lesson3)
+    {
+        List<NameValuePair> productOjb = new ArrayList<NameValuePair>();
+        productOjb.add(new BasicNameValuePair("id", id));
         productOjb.add(new BasicNameValuePair("image", image));
-        productOjb.add(new BasicNameValuePair("description", description));
-        JSONObject jobj=jsonparser.getJSONFromUrl(updateproduct, productOjb);
+        productOjb.add(new BasicNameValuePair("questions", questions));
+        productOjb.add(new BasicNameValuePair("answer1", answer1));
+        productOjb.add(new BasicNameValuePair("answer2", answer2));
+        productOjb.add(new BasicNameValuePair("resultans", resultans));
+        productOjb.add(new BasicNameValuePair("score", score));
+        JSONObject jobj=jsonparser.getJSONFromUrl(updateexam, productOjb);
         return jobj;
     }
 
-    public JSONObject deleteProduct(String id)
+    //Delete
+    public JSONObject deleteUnit(String id)
     {
         List<NameValuePair> productID = new ArrayList<NameValuePair>();
         productID.add(new BasicNameValuePair("id", id));
-        JSONObject jobj=jsonparser.getJSONFromUrl(deleteproduct, productID);
+        JSONObject jobj=jsonparser.getJSONFromUrl(deleteunit, productID);
+        return jobj;
+    }
+
+    public JSONObject deleteExam(String id)
+    {
+        List<NameValuePair> productID = new ArrayList<NameValuePair>();
+        productID.add(new BasicNameValuePair("id", id));
+        JSONObject jobj=jsonparser.getJSONFromUrl(deleteexam, productID);
         return jobj;
     }
 

@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.example.thevillain.mathforbaby.MainActivity;
 import com.example.thevillain.mathforbaby.R;
 import com.example.thevillain.mathforbaby.SupportClass.MyFunctions;
-import com.example.thevillain.mathforbaby.mainfunction.UnitActivity;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -66,7 +65,7 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onClick(View view) {
                 //new executeLogin(BeginActivity.this).execute();
-                Intent intent = new Intent(BeginActivity.this,UnitActivity.class);
+                Intent intent = new Intent(BeginActivity.this,MainActivity.class);
                 startActivity(intent);
             }
         });
