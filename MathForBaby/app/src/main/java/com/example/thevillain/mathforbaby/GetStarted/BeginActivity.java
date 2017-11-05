@@ -1,7 +1,9 @@
 package com.example.thevillain.mathforbaby.GetStarted;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.thevillain.mathforbaby.MainActivity;
+import com.example.thevillain.mathforbaby.Objects.User;
 import com.example.thevillain.mathforbaby.R;
 import com.example.thevillain.mathforbaby.SupportClass.MyFunctions;
 import com.facebook.AccessToken;
@@ -24,12 +27,18 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,14 +48,17 @@ import java.util.Calendar;
 
 
 public class BeginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
-    Button btnGo, btnGg;
-    LoginButton btnFb;
     TextView txtSignip, txtH, txtM, txtWarning;
-    int currentHour, currentMinute;
     EditText edtUser, edtPass;
+    Button btnGo;
+    LoginButton btnFb;
+    SignInButton signInButton;
     CallbackManager callbackManager;
-    String avatar, fullname, email_username, password, highscore, acc_type;
     private GoogleApiClient mGoogleApiClient;
+    private int RC_SIGN_IN = 007;
+    String avatar, fullname, username, password, highscore, account_type;
+    int currentHour, currentMinute;
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,17 +68,16 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_begin);
         getSupportActionBar().hide();
-
         callbackManager = CallbackManager.Factory.create();
         init();
+        signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        signInButton.setSize(SignInButton.SIZE_STANDARD);
         setTime();
         warning();
         btnGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //new executeLogin(BeginActivity.this).execute();
-                Intent intent = new Intent(BeginActivity.this,MainActivity.class);
-                startActivity(intent);
+                new executeLogin(BeginActivity.this).execute();
             }
         });
         txtSignip.setOnClickListener(new View.OnClickListener() {
@@ -79,14 +90,42 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
         btnFb.setReadPermissions(Arrays.asList("public_profile", "email"));
         setLoginFB();
 
-        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signIn();
+            }
+        });
+        Button btnSignout = (Button) findViewById(R.id.signout);
+        btnSignout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signOut();
+                LoginManager.getInstance().logOut();
+            }
+        });
+    }
 
+    private void signIn() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    private void signOut() {
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        Toast.makeText(BeginActivity.this, "Log out!", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void setLoginFB() {
@@ -108,17 +147,26 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
         });
     }
 
+    //facebook result
     private void result() {
         GraphRequest graphRequest = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
             @Override
             public void onCompleted(JSONObject object, GraphResponse response) {
                 try {
-                    fullname = object.getString("name");
-                    email_username = object.getString("email");
                     String id = object.getString("id");
                     avatar = "https://graph.facebook.com/"+id+"/picture?type=large";
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    fullname = object.getString("name");
+                    username = object.getString("email");
+                    password = "none";
+                    highscore = "0";
+                    account_type = "facebook";
+                    User user = new User(avatar, fullname, username, password, highscore, account_type);
+                    new executeRegister(user).execute();
+                    Intent intent = new Intent(BeginActivity.this, MainActivity.class);
                     startActivity(intent);
+                    Toast.makeText(BeginActivity.this, "aaaaaaa", Toast.LENGTH_SHORT).show();
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -134,15 +182,39 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
+        }
     }
 
+    //handle Google
+    private void handleSignInResult(GoogleSignInResult result) {
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+            GoogleSignInAccount acct = result.getSignInAccount();
+            Uri uri = acct.getPhotoUrl();
+            String imgUrl;
+            imgUrl = uri.toString();
+            avatar = imgUrl;
+            fullname = acct.getDisplayName().toString();
+            username = acct.getEmail().toString();
+            password = "none";
+            highscore = "0";
+            account_type = "google";
+            User user = new User(avatar, fullname, username, password, highscore, account_type);
+            new executeRegister(user).execute();
+
+        } else {
+        }
+    }
+
+    //onConnectionFailed Google
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
 
-    }
-
-    class executeLogin extends AsyncTask<Void,Void,String>
-    {
+    class executeLogin extends AsyncTask<Void,Void,String> {
         Context c;
         MyFunctions myfunctions;
         String user;
@@ -162,9 +234,7 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
             try{
                 myfunctions = new MyFunctions(getApplicationContext());
                 JSONObject jsonobject=myfunctions.loginUser(user, password);
-
                 successful = jsonobject.getString("successful");
-
             }catch(Exception e)
             {
             }
@@ -202,7 +272,6 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
         txtWarning = (TextView) findViewById(R.id.txtWarning);
         btnGo = (Button)findViewById(R.id.buttonGo);
         btnFb = (LoginButton) findViewById(R.id.btnFb);
-        btnGg = (Button) findViewById(R.id.btnGg);
         txtSignip = (TextView) findViewById(R.id.tvSignUp);
         edtUser = (EditText) findViewById(R.id.edtUser);
         edtPass = (EditText) findViewById(R.id.edtPass);
@@ -225,6 +294,55 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
         else {
             txtH.setText("" + currentHour);
             txtM.setText("" + currentMinute);
+        }
+
+    }
+
+    class executeRegister extends AsyncTask<Void,Void,String> {
+        String avt, fname, uname, pword, hscore, acc_type;
+        MyFunctions myfunctions;
+        User user;
+
+        public executeRegister( User user) {
+            this.user = user;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            // TODO Auto-generated method stub
+
+            String successful = null;
+            try
+            {
+                avt = user.getAvatar();
+                fname = user.getFullname();
+                uname = user.getUsername();
+                pword = user.getPassword();
+                hscore = user.getHighscore();
+                acc_type = user.getAccount_type();
+
+                myfunctions=new MyFunctions(getApplicationContext());
+                JSONObject jsonobject=myfunctions.registerUser(avt, fname, uname, pword, hscore, acc_type);
+                successful = jsonobject.getString("successful");
+
+            }catch(Exception e)
+            {
+            }
+            return successful;
+        }
+
+        @Override
+        protected void onPostExecute(String successful) {
+            // TODO Auto-generated method stub
+            super.onPostExecute(successful);
+            if(Integer.parseInt(successful)==1)
+            {
+
+            }
+            else
+            {
+                Toast.makeText(getApplicationContext(), "Registration failed!", Toast.LENGTH_SHORT).show();
+            }
         }
 
     }
