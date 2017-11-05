@@ -27,7 +27,6 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -50,15 +49,16 @@ import java.util.Calendar;
 public class BeginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     TextView txtSignip, txtH, txtM, txtWarning;
     EditText edtUser, edtPass;
-    Button btnGo;
+    Button btnGo, btnSignout;
     LoginButton btnFb;
     SignInButton signInButton;
     CallbackManager callbackManager;
     private GoogleApiClient mGoogleApiClient;
     private int RC_SIGN_IN = 007;
-    String avatar, fullname, username, password, highscore, account_type;
+    String id, avatar, fullname, username, password, highscore, account_type;
     int currentHour, currentMinute;
     private ProgressDialog mProgressDialog;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +68,16 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_begin);
         getSupportActionBar().hide();
-        callbackManager = CallbackManager.Factory.create();
+
         init();
-        signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_STANDARD);
         setTime();
         warning();
+        actionOnclick();
+        setLoginFB();
+        setLoginGoogle();
+    }
+
+    private void actionOnclick() {
         btnGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,9 +91,23 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
                 startActivity(intent);
             }
         });
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signIn();
+            }
+        });
+//        btnSignout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                signOut();
+//                LoginManager.getInstance().logOut();
+//            }
+//        });
         btnFb.setReadPermissions(Arrays.asList("public_profile", "email"));
-        setLoginFB();
+    }
 
+    private void setLoginGoogle() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -97,20 +115,6 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn();
-            }
-        });
-        Button btnSignout = (Button) findViewById(R.id.signout);
-        btnSignout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signOut();
-                LoginManager.getInstance().logOut();
-            }
-        });
     }
 
     private void signIn() {
@@ -147,26 +151,20 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
         });
     }
 
-    //facebook result
     private void result() {
         GraphRequest graphRequest = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
             @Override
             public void onCompleted(JSONObject object, GraphResponse response) {
                 try {
                     String id = object.getString("id");
-                    avatar = "https://graph.facebook.com/"+id+"/picture?type=large";
+                    avatar = "https://graph.facebook.com/" + id + "/picture?type=large";
                     fullname = object.getString("name");
                     username = object.getString("email");
                     password = "none";
                     highscore = "0";
                     account_type = "facebook";
                     User user = new User(avatar, fullname, username, password, highscore, account_type);
-                    new executeRegister(user).execute();
-                    Intent intent = new Intent(BeginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    Toast.makeText(BeginActivity.this, "aaaaaaa", Toast.LENGTH_SHORT).show();
-
-
+                    new executeSignUp(user).execute();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -189,7 +187,6 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
         }
     }
 
-    //handle Google
     private void handleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
@@ -204,25 +201,65 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
             highscore = "0";
             account_type = "google";
             User user = new User(avatar, fullname, username, password, highscore, account_type);
-            new executeRegister(user).execute();
+            new executeSignUp(user).execute();
 
         } else {
         }
     }
 
-    //onConnectionFailed Google
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+    }
 
-    class executeLogin extends AsyncTask<Void,Void,String> {
+    private void warning() {
+        if (6 > currentHour | currentHour > 22) {
+            txtWarning.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void init() {
+        callbackManager = CallbackManager.Factory.create();
+        txtH = (TextView) findViewById(R.id.txtH);
+        txtM = (TextView) findViewById(R.id.txtM);
+        txtWarning = (TextView) findViewById(R.id.txtWarning);
+        btnGo = (Button) findViewById(R.id.buttonGo);
+        btnFb = (LoginButton) findViewById(R.id.btnFb);
+        txtSignip = (TextView) findViewById(R.id.tvSignUp);
+        edtUser = (EditText) findViewById(R.id.edtUser);
+        edtPass = (EditText) findViewById(R.id.edtPass);
+        signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        signInButton.setSize(SignInButton.SIZE_STANDARD);
+//        btnSignout = (Button) findViewById(R.id.signout);
+    }
+
+    private void setTime() {
+        Calendar rightNow = Calendar.getInstance();
+        currentHour = rightNow.get(Calendar.HOUR_OF_DAY);
+        currentMinute = rightNow.get(Calendar.MINUTE);
+        if (currentHour < 10) {
+            if (currentMinute < 10) {
+                txtH.setText("0" + currentHour);
+                txtM.setText("0" + currentMinute);
+            } else {
+                txtH.setText("0" + currentHour);
+                txtM.setText("" + currentMinute);
+            }
+        } else {
+            txtH.setText("" + currentHour);
+            txtM.setText("" + currentMinute);
+        }
+
+    }
+
+    class executeLogin extends AsyncTask<Void, Void, String> {
         Context c;
         MyFunctions myfunctions;
-        String user;
+        String username;
         String password;
 
         public executeLogin(Context c) {
             this.c = c;
-            user = edtUser.getText().toString();
+            username = edtUser.getText().toString();
             password = edtPass.getText().toString();
         }
 
@@ -231,12 +268,11 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
             // TODO Auto-generated method stub
             String successful = null;
 
-            try{
+            try {
                 myfunctions = new MyFunctions(getApplicationContext());
-                JSONObject jsonobject=myfunctions.loginUser(user, password);
+                JSONObject jsonobject = myfunctions.loginUser(username, password);
                 successful = jsonobject.getString("successful");
-            }catch(Exception e)
-            {
+            } catch (Exception e) {
             }
             return successful;
         }
@@ -245,14 +281,13 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
         protected void onPostExecute(String successful) {
             // TODO Auto-generated method stub
             super.onPostExecute(successful);
-            if(Integer.parseInt(successful)==1)
-            {
+            if (Integer.parseInt(successful) == 1) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("KEYCODE","normal");
                 startActivity(intent);
                 finish();
-            }
-            else
-            {
+
+            } else {
                 Toast.makeText(getApplicationContext(),
                         "Incorrect passwork!!!",
                         Toast.LENGTH_SHORT).show();
@@ -260,50 +295,13 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
         }
 
     }
-    private void warning() {
-        if (6 > currentHour | currentHour > 22){
-            txtWarning.setVisibility(View.VISIBLE);
-        }
-    }
 
-    private void init() {
-        txtH = (TextView) findViewById(R.id.txtH);
-        txtM = (TextView) findViewById(R.id.txtM);
-        txtWarning = (TextView) findViewById(R.id.txtWarning);
-        btnGo = (Button)findViewById(R.id.buttonGo);
-        btnFb = (LoginButton) findViewById(R.id.btnFb);
-        txtSignip = (TextView) findViewById(R.id.tvSignUp);
-        edtUser = (EditText) findViewById(R.id.edtUser);
-        edtPass = (EditText) findViewById(R.id.edtPass);
-    }
-
-    private void setTime() {
-        Calendar rightNow = Calendar.getInstance();
-        currentHour = rightNow.get(Calendar.HOUR_OF_DAY);
-        currentMinute = rightNow.get(Calendar.MINUTE);
-        if(currentHour < 10){
-            if(currentMinute < 10){
-                txtH.setText("0"+currentHour);
-                txtM.setText("0"+currentMinute);
-            }
-            else {
-                txtH.setText("0"+currentHour);
-                txtM.setText(""+currentMinute);
-            }
-        }
-        else {
-            txtH.setText("" + currentHour);
-            txtM.setText("" + currentMinute);
-        }
-
-    }
-
-    class executeRegister extends AsyncTask<Void,Void,String> {
+    class executeSignUp extends AsyncTask<Void, Void, String> {
         String avt, fname, uname, pword, hscore, acc_type;
         MyFunctions myfunctions;
         User user;
 
-        public executeRegister( User user) {
+        public executeSignUp(User user) {
             this.user = user;
         }
 
@@ -312,8 +310,7 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
             // TODO Auto-generated method stub
 
             String successful = null;
-            try
-            {
+            try {
                 avt = user.getAvatar();
                 fname = user.getFullname();
                 uname = user.getUsername();
@@ -321,12 +318,11 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
                 hscore = user.getHighscore();
                 acc_type = user.getAccount_type();
 
-                myfunctions=new MyFunctions(getApplicationContext());
-                JSONObject jsonobject=myfunctions.registerUser(avt, fname, uname, pword, hscore, acc_type);
+                myfunctions = new MyFunctions(getApplicationContext());
+                JSONObject jsonobject = myfunctions.registerUser(avt, fname, uname, pword, hscore, acc_type);
                 successful = jsonobject.getString("successful");
 
-            }catch(Exception e)
-            {
+            } catch (Exception e) {
             }
             return successful;
         }
@@ -335,15 +331,75 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
         protected void onPostExecute(String successful) {
             // TODO Auto-generated method stub
             super.onPostExecute(successful);
-            if(Integer.parseInt(successful)==1)
-            {
-
-            }
-            else
-            {
-                Toast.makeText(getApplicationContext(), "Registration failed!", Toast.LENGTH_SHORT).show();
+            if (Integer.parseInt(successful) == 1) {
+                Intent intent = new Intent(BeginActivity.this, MainActivity.class);
+                intent.putExtra("KEYCODE",acc_type);
+                intent.putExtra("avtS",avt);
+                intent.putExtra("fnameS",fname);
+                intent.putExtra("unameS",fname);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(BeginActivity.this, MainActivity.class);
+                intent.putExtra("KEYCODE",acc_type);
+                intent.putExtra("avtS",avt);
+                intent.putExtra("fnameS",fname);
+                intent.putExtra("unameS",fname);
+                startActivity(intent);
             }
         }
 
     }
+
+    class executeRegister extends AsyncTask<Void, Void, String> {
+        String avt, fname, uname, pword, hscore, acc_type;
+        MyFunctions myfunctions;
+        User user;
+
+        public executeRegister(User user) {
+            this.user = user;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            // TODO Auto-generated method stub
+
+            String successful = null;
+            try {
+                avt = user.getAvatar();
+                fname = user.getFullname();
+                uname = user.getUsername();
+                pword = user.getPassword();
+                hscore = user.getHighscore();
+                acc_type = user.getAccount_type();
+
+                myfunctions = new MyFunctions(getApplicationContext());
+                JSONObject jsonobject = myfunctions.registerUser(avt, fname, uname, pword, hscore, acc_type);
+                successful = jsonobject.getString("successful");
+
+            } catch (Exception e) {
+            }
+            return successful;
+        }
+
+        @Override
+        protected void onPostExecute(String successful) {
+            // TODO Auto-generated method stub
+            super.onPostExecute(successful);
+            if (Integer.parseInt(successful) == 1) {
+                Intent intent = new Intent(BeginActivity.this, MainActivity.class);
+                intent.putExtra("avtS",avt);
+                intent.putExtra("fnameS",fname);
+                intent.putExtra("unameS",fname);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(BeginActivity.this, MainActivity.class);
+                intent.putExtra("avtS",avt);
+                intent.putExtra("fnameS",fname);
+                intent.putExtra("unameS",fname);
+                startActivity(intent);
+            }
+        }
+
+    }
+
 }
