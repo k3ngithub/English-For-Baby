@@ -262,6 +262,7 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
     }
     private void warning() {
         if (6 > currentHour | currentHour > 22){
+
             txtWarning.setVisibility(View.VISIBLE);
         }
     }

@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.thevillain.mathforbaby.mainfunction.AchievementsActivity;
 import com.example.thevillain.mathforbaby.mainfunction.LearningActivity;
 
 public class MainActivity extends AppCompatActivity
@@ -50,6 +51,13 @@ public class MainActivity extends AppCompatActivity
         init();
 
         imgLearn.setOnClickListener(this);
+        imgAchie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AchievementsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void init() {

@@ -13,7 +13,7 @@ import java.util.List;
 public class MyFunctions {
     JSONParser jsonparser;
 
-    private final String ip = "http://192.168.0.107";
+    private final String ip = "http://192.168.0.106";
     String loginurl=ip+"/webAPI_php/index.php";
     String registerurl=ip+"/webAPI_php/index.php";
     //Get All
