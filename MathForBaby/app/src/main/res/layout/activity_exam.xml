@@ -37,6 +37,7 @@
         app:layout_constraintHorizontal_bias="0.0" />
 
     <RadioGroup
+        android:id="@+id/radioGroup"
         android:orientation="horizontal"
         android:layout_width="368dp"
         android:layout_height="wrap_content"

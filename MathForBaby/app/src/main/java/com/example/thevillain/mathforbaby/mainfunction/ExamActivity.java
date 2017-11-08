@@ -3,11 +3,13 @@ package com.example.thevillain.mathforbaby.mainfunction;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.thevillain.mathforbaby.Adapter.Exams;
@@ -31,32 +33,49 @@ public class ExamActivity extends AppCompatActivity {
     String exam_img, exam_question, exam_answer1, exam_answer2, exam_resultans, exam_score, id;
     Exams exam;
     ProgressDialog pg_dialog;
-    int rand, count;
+    int rand, count = 0, score = 0;
     List<Integer> list;
     List<String> listAnserRandom;
-
+    RadioGroup radioButtonGroup;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exam);
 
         init();
-        randomdata();
-        count = 0;
+        getRandomData();
         btNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String sodata = String.valueOf(list.get(count));
-                new getDetail(sodata).execute();
-                count = count + 1;
-                if (count == 9) {
-                    Toast.makeText(ExamActivity.this, "Code kết thúc bài thi!!!", Toast.LENGTH_SHORT).show();
+                if(radioButton1.isChecked()==false & radioButton2.isChecked()==false & radioButtonResultans.isChecked()==false){
+                    Snackbar.make(v, "Chose a answer!", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                }
+                else {
+                    String sodata = String.valueOf(list.get(count));
+                    new getDetail(sodata).execute();
+                    count = count + 1;
+
+                    int radioButtonID = radioButtonGroup.getCheckedRadioButtonId();
+                    View radioButton = radioButtonGroup.findViewById(radioButtonID);
+                    int idx = radioButtonGroup.indexOfChild(radioButton);
+                    RadioButton radioResult = (RadioButton)  radioButtonGroup.getChildAt(idx);
+                    String selectedRusult = radioResult.getText().toString();
+
+                    if(selectedRusult.equals(exam_resultans)){
+                        score = score + 1;
+                        Toast.makeText(ExamActivity.this, "Đúng luôn!!!"+ count, Toast.LENGTH_SHORT).show();
+                    }
+                    if (count == 9) {
+                        Toast.makeText(ExamActivity.this, "Điểm: "+ score, Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
+
     }
 
-    private void randomdata() {
+    private void getRandomData() {
         list = new ArrayList<Integer>();
         for (int i = 0; i < 10; ) {
             rand = ((int) (Math.random() * 10)) + 1;
@@ -68,11 +87,11 @@ public class ExamActivity extends AppCompatActivity {
             }
         }
         new getDetail(id).execute();
-
     }
 
     public void init() {
         imageViewExam = (ImageView) findViewById(R.id.imageViewExam);
+        radioButtonGroup = (RadioGroup) findViewById(R.id.radioGroup);
         radioButton1 = (RadioButton) findViewById(R.id.radioQues1);
         radioButton2 = (RadioButton) findViewById(R.id.radioQues2);
         radioButtonResultans = (RadioButton) findViewById(R.id.radioQue3);
@@ -153,6 +172,10 @@ public class ExamActivity extends AppCompatActivity {
                     i++;
                 }
             }
+            radioButton1.setChecked(false);
+            radioButton2.setChecked(false);
+            radioButtonResultans.setChecked(false);
+
             radioButton1.setText(listAnserRandom.get(0));
             radioButton2.setText(listAnserRandom.get(1));
             radioButtonResultans.setText(listAnserRandom.get(2));
