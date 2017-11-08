@@ -194,6 +194,7 @@
             android:paddingTop="12dp"
             android:paddingBottom="12dp"/>
     </LinearLayout>
+
     <Button
         android:id="@+id/signout"
         android:layout_width="wrap_content"

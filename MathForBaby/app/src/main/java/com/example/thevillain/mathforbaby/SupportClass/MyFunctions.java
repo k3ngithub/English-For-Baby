@@ -12,17 +12,25 @@ import java.util.List;
 
 public class MyFunctions {
     JSONParser jsonparser;
+<<<<<<< HEAD
 
     private final String ip = "http://192.168.0.102";
+=======
+    private final String ip = "http://192.168.43.55";
+>>>>>>> 6a43dc6e41023604657db18070a58d5ecbcdf5de
     String loginurl=ip+"/webAPI_php/index.php";
     String registerurl=ip+"/webAPI_php/index.php";
     //Get All
     String alluniturl=ip+"/webAPI_php/getallunit.php";
     String allexamurl=ip+"/webAPI_php/getallexam.php";
+
+    String userdetailsurl=ip+"/webAPI_php/getuserbyusername.php";
     //Get Title Unit
     String titleuniturl=ip+"/webAPI_php/gettitleunit.php";
     //Get Detail Unit
     String getunitdetailurl=ip+"/webAPI_php/getunitdetail.php";
+
+    String getexamdetailurl=ip+"/webAPI_php/getexamdetail.php";
     //Create
     String createuniturl=ip+"/webAPI_php/createunit.php";
     String createexam=ip+"/webAPI_php/createexam.php";
@@ -136,6 +144,23 @@ public class MyFunctions {
         JSONObject jobj = jsonparser.getJSONFromUrl(getunitdetailurl,cacdoiso);
         return jobj;
     }
+
+    //Detail
+    public JSONObject getExamDetail(String id) {
+        List<NameValuePair> cacdoiso = new ArrayList<NameValuePair>();
+        cacdoiso.add(new BasicNameValuePair("id", id));
+        JSONObject jobj = jsonparser.getJSONFromUrl(getexamdetailurl, cacdoiso);
+        return jobj;
+    }
+    public JSONObject getUserByUsername(String username)
+    {
+        //POST khong can doi so nen ta tao doi so rong
+        List<NameValuePair> cacdoiso=new ArrayList<NameValuePair>();
+        cacdoiso.add(new BasicNameValuePair("username",username));
+        JSONObject jobj=jsonparser.getJSONFromUrl(userdetailsurl, cacdoiso);
+        return jobj;
+    }
+
     public JSONObject getAllExam()
     {
         //POST khong can doi so nen ta tao doi so rong
@@ -143,6 +168,7 @@ public class MyFunctions {
         JSONObject jobj=jsonparser.getJSONFromUrl(allexamurl, cacdoiso);
         return jobj;
     }
+
     //CreateUnit
     public JSONObject createUnit(String unit_name,String unit_img, String lesson1_img,String lesson1,String lesson2_img,String lesson2,String lesson3_img,String lesson3)
     {

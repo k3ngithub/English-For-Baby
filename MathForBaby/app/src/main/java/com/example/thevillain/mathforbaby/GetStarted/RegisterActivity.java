@@ -25,7 +25,7 @@ public class RegisterActivity extends AppCompatActivity {
     TextView txtHs, txtMs, txtWarns,tvBack;
     int currentHour, currentMinute;
     EditText edtFullname, edtUsername, edtPassword;
-    String normalUserAvt = "https://www.atomix.com.au/media/2015/06/atomix_user31.png";
+    public static String normalUserAvt = "https://www.atomix.com.au/media/2015/06/atomix_user31.png";
     Button btnReg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,15 +13,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
-
+import android.widget.TextView;
+import com.example.thevillain.mathforbaby.mainfunction.ExamActivity;
+import com.example.thevillain.mathforbaby.GetStarted.RegisterActivity;
 import com.example.thevillain.mathforbaby.mainfunction.AchievementsActivity;
 import com.example.thevillain.mathforbaby.mainfunction.LearningActivity;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener,NavigationView.OnNavigationItemSelectedListener {
 
-    ImageView imgLearn, imgExam, imgAchie, imgShare;
+    TextView txtName;
+    ImageView imgLearn, imgExam, imgAchie, imgShare, imgAvt;
+    String avatar, fullname, username,highscore, account_type, KEYCODE;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +37,11 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//
+                Intent i = new Intent(MainActivity.this, ExamActivity.class);
+                startActivity(i);
             }
         });
 
@@ -51,6 +57,23 @@ public class MainActivity extends AppCompatActivity
         init();
 
         imgLearn.setOnClickListener(this);
+
+        getData();
+    }
+
+    private void getData() {
+        Bundle b = new Bundle();
+        b = getIntent().getExtras();
+        KEYCODE = b.getString("KEYCODE");
+        if(KEYCODE.equals("normal")) {
+            Picasso.with(getApplicationContext()).load(RegisterActivity.normalUserAvt).into(imgAvt);
+        } else{
+            avatar = b.getString("avtS");
+            fullname = b.getString("fnameS");
+            username = b.getString("unameS");
+            txtName.setText(fullname);
+            Picasso.with(getApplicationContext()).load(avatar).into(imgAvt);
+        }
         imgAchie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +88,8 @@ public class MainActivity extends AppCompatActivity
         imgLearn = (ImageView) findViewById(R.id.imgLearn);
         imgExam = (ImageView) findViewById(R.id.imgExam);
         imgShare = (ImageView) findViewById(R.id.imgShare);
+        imgAvt = (ImageView) findViewById(R.id.imgAvt);
+        txtName = (TextView) findViewById(R.id.txtName);
     }
 
     @Override
@@ -130,7 +155,6 @@ public class MainActivity extends AppCompatActivity
             case R.id.imgLearn:
                 Intent intent = new Intent(MainActivity.this, LearningActivity.class);
                 startActivity(intent);
-                Toast.makeText(this, "Hi, kids!", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.imgExam:
                 break;
