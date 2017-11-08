@@ -12,7 +12,16 @@ import java.util.List;
 
 public class MyFunctions {
     JSONParser jsonparser;
+<<<<<<< HEAD
     private final String ip = "http://192.168.0.111";
+=======
+<<<<<<< HEAD
+
+    private final String ip = "http://192.168.0.102";
+=======
+    private final String ip = "http://192.168.43.55";
+>>>>>>> 6a43dc6e41023604657db18070a58d5ecbcdf5de
+>>>>>>> 81e85eec2fb4b39dee914e9c1b857cf1170fd773
     String loginurl=ip+"/webAPI_php/index.php";
     String registerurl=ip+"/webAPI_php/index.php";
     //Get All
@@ -33,7 +42,7 @@ public class MyFunctions {
     String updateunit=ip+"/webAPI_php/updateunit.php";
     String updateexam=ip+"/webAPI_php/updateexam.php";
     //Deleta
-    String deleteunit=ip+"/webAPI_php/deleteunit.php";
+    String deleteunit=ip+"/webAPI_php/deleteunits.php";
     String deleteexam=ip+"/webAPI_php/deleteexam.php";
 
     String login_tag="login";
@@ -228,9 +237,9 @@ public class MyFunctions {
     //Delete
     public JSONObject deleteUnit(String id)
     {
-        List<NameValuePair> productID = new ArrayList<NameValuePair>();
-        productID.add(new BasicNameValuePair("id", id));
-        JSONObject jobj=jsonparser.getJSONFromUrl(deleteunit, productID);
+        List<NameValuePair> unitID = new ArrayList<NameValuePair>();
+        unitID.add(new BasicNameValuePair("id", id));
+        JSONObject jobj=jsonparser.getJSONFromUrl(deleteunit, unitID);
         return jobj;
     }
 

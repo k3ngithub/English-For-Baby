@@ -80,6 +80,7 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
         btnGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 new executeLogin(BeginActivity.this).execute();
             }
         });
