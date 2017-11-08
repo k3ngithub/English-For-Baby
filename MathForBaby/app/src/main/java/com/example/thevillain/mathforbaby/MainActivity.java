@@ -13,15 +13,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 
+<<<<<<< HEAD
 import com.example.thevillain.mathforbaby.mainfunction.ExamActivity;
+=======
+import com.example.thevillain.mathforbaby.GetStarted.RegisterActivity;
+import com.example.thevillain.mathforbaby.mainfunction.AchievementsActivity;
+>>>>>>> fb2d47169f7a25abcd33395b74958309a4f4b2ae
 import com.example.thevillain.mathforbaby.mainfunction.LearningActivity;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener,NavigationView.OnNavigationItemSelectedListener {
 
-    ImageView imgLearn, imgExam, imgAchie, imgShare;
+    TextView txtName;
+    ImageView imgLearn, imgExam, imgAchie, imgShare, imgAvt;
+    String avatar, fullname, username,highscore, account_type, KEYCODE;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +61,30 @@ public class MainActivity extends AppCompatActivity
         init();
 
         imgLearn.setOnClickListener(this);
+
+        getData();
+    }
+
+    private void getData() {
+        Bundle b = new Bundle();
+        b = getIntent().getExtras();
+        KEYCODE = b.getString("KEYCODE");
+        if(KEYCODE.equals("normal")) {
+            Picasso.with(getApplicationContext()).load(RegisterActivity.normalUserAvt).into(imgAvt);
+        } else{
+            avatar = b.getString("avtS");
+            fullname = b.getString("fnameS");
+            username = b.getString("unameS");
+            txtName.setText(fullname);
+            Picasso.with(getApplicationContext()).load(avatar).into(imgAvt);
+        }
+        imgAchie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AchievementsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void init() {
@@ -60,6 +92,8 @@ public class MainActivity extends AppCompatActivity
         imgLearn = (ImageView) findViewById(R.id.imgLearn);
         imgExam = (ImageView) findViewById(R.id.imgExam);
         imgShare = (ImageView) findViewById(R.id.imgShare);
+        imgAvt = (ImageView) findViewById(R.id.imgAvt);
+        txtName = (TextView) findViewById(R.id.txtName);
     }
 
     @Override
@@ -125,7 +159,6 @@ public class MainActivity extends AppCompatActivity
             case R.id.imgLearn:
                 Intent intent = new Intent(MainActivity.this, LearningActivity.class);
                 startActivity(intent);
-                Toast.makeText(this, "Hi, kids!", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.imgExam:
                 break;

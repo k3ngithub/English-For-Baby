@@ -19,6 +19,8 @@ public class MyFunctions {
     //Get All
     String alluniturl=ip+"/webAPI_php/getallunit.php";
     String allexamurl=ip+"/webAPI_php/getallexam.php";
+
+    String userdetailsurl=ip+"/webAPI_php/getuserbyusername.php";
     //Get Title Unit
     String titleuniturl=ip+"/webAPI_php/gettitleunit.php";
     //Get Detail Unit
@@ -139,12 +141,21 @@ public class MyFunctions {
         return jobj;
     }
 
+<<<<<<< HEAD
     //Detail
     public JSONObject getExamDetail(String id)
     {
         List<NameValuePair> cacdoiso = new ArrayList<NameValuePair>();
         cacdoiso.add(new BasicNameValuePair("id",id));
         JSONObject jobj = jsonparser.getJSONFromUrl(getexamdetailurl,cacdoiso);
+=======
+    public JSONObject getUserByUsername(String username)
+    {
+        //POST khong can doi so nen ta tao doi so rong
+        List<NameValuePair> cacdoiso=new ArrayList<NameValuePair>();
+        cacdoiso.add(new BasicNameValuePair("username",username));
+        JSONObject jobj=jsonparser.getJSONFromUrl(userdetailsurl, cacdoiso);
+>>>>>>> fb2d47169f7a25abcd33395b74958309a4f4b2ae
         return jobj;
     }
 
@@ -155,6 +166,7 @@ public class MyFunctions {
         JSONObject jobj=jsonparser.getJSONFromUrl(allexamurl, cacdoiso);
         return jobj;
     }
+
     //CreateUnit
     public JSONObject createUnit(String unit_name,String unit_img, String lesson1_img,String lesson1,String lesson2_img,String lesson2,String lesson3_img,String lesson3)
     {
