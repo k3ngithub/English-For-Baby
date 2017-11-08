@@ -12,12 +12,7 @@ import java.util.List;
 
 public class MyFunctions {
     JSONParser jsonparser;
-
-<<<<<<< HEAD
-    private final String ip = "http://10.200.201.15";
-=======
-    private final String ip = "http://169.254.97.73:9091";
->>>>>>> 17676385589c7a1225c9d200bb83be2c767aa2c1
+    private final String ip = "http://192.168.43.55";
     String loginurl=ip+"/webAPI_php/index.php";
     String registerurl=ip+"/webAPI_php/index.php";
     //Get All
@@ -145,21 +140,19 @@ public class MyFunctions {
         return jobj;
     }
 
-<<<<<<< HEAD
     //Detail
-    public JSONObject getExamDetail(String id)
-    {
+    public JSONObject getExamDetail(String id) {
         List<NameValuePair> cacdoiso = new ArrayList<NameValuePair>();
-        cacdoiso.add(new BasicNameValuePair("id",id));
-        JSONObject jobj = jsonparser.getJSONFromUrl(getexamdetailurl,cacdoiso);
-=======
+        cacdoiso.add(new BasicNameValuePair("id", id));
+        JSONObject jobj = jsonparser.getJSONFromUrl(getexamdetailurl, cacdoiso);
+        return jobj;
+    }
     public JSONObject getUserByUsername(String username)
     {
         //POST khong can doi so nen ta tao doi so rong
         List<NameValuePair> cacdoiso=new ArrayList<NameValuePair>();
         cacdoiso.add(new BasicNameValuePair("username",username));
         JSONObject jobj=jsonparser.getJSONFromUrl(userdetailsurl, cacdoiso);
->>>>>>> fb2d47169f7a25abcd33395b74958309a4f4b2ae
         return jobj;
     }
 
