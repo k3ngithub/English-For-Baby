@@ -13,7 +13,7 @@ import java.util.List;
 public class MyFunctions {
     JSONParser jsonparser;
 
-    private final String ip = "http://192.168.0.107";
+    private final String ip = "http://169.254.97.73:9091";
     String loginurl=ip+"/webAPI_php/index.php";
     String registerurl=ip+"/webAPI_php/index.php";
     //Get All
@@ -23,6 +23,8 @@ public class MyFunctions {
     String titleuniturl=ip+"/webAPI_php/gettitleunit.php";
     //Get Detail Unit
     String getunitdetailurl=ip+"/webAPI_php/getunitdetail.php";
+
+    String getexamdetailurl=ip+"/webAPI_php/getexamdetail.php";
     //Create
     String createuniturl=ip+"/webAPI_php/createunit.php";
     String createexam=ip+"/webAPI_php/createexam.php";
@@ -136,6 +138,16 @@ public class MyFunctions {
         JSONObject jobj = jsonparser.getJSONFromUrl(getunitdetailurl,cacdoiso);
         return jobj;
     }
+
+    //Detail
+    public JSONObject getExamDetail(String id)
+    {
+        List<NameValuePair> cacdoiso = new ArrayList<NameValuePair>();
+        cacdoiso.add(new BasicNameValuePair("id",id));
+        JSONObject jobj = jsonparser.getJSONFromUrl(getexamdetailurl,cacdoiso);
+        return jobj;
+    }
+
     public JSONObject getAllExam()
     {
         //POST khong can doi so nen ta tao doi so rong
