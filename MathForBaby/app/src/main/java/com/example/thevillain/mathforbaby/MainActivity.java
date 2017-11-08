@@ -15,9 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.thevillain.mathforbaby.GetStarted.RegisterActivity;
+import com.example.thevillain.mathforbaby.mainfunction.AchievementsActivity;
 import com.example.thevillain.mathforbaby.mainfunction.LearningActivity;
 import com.squareup.picasso.Picasso;
 
@@ -72,6 +72,13 @@ public class MainActivity extends AppCompatActivity
             txtName.setText(fullname);
             Picasso.with(getApplicationContext()).load(avatar).into(imgAvt);
         }
+        imgAchie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AchievementsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void init() {
@@ -146,7 +153,6 @@ public class MainActivity extends AppCompatActivity
             case R.id.imgLearn:
                 Intent intent = new Intent(MainActivity.this, LearningActivity.class);
                 startActivity(intent);
-                Toast.makeText(this, "Hi, kids!", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.imgExam:
                 break;

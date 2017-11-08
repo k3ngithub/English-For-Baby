@@ -1,6 +1,7 @@
 package com.example.thevillain.mathforbaby.GetStarted;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,7 +22,7 @@ import java.util.Calendar;
 
 
 public class RegisterActivity extends AppCompatActivity {
-    TextView txtHs, txtMs, txtWarns;
+    TextView txtHs, txtMs, txtWarns,tvBack;
     int currentHour, currentMinute;
     EditText edtFullname, edtUsername, edtPassword;
     public static String normalUserAvt = "https://www.atomix.com.au/media/2015/06/atomix_user31.png";
@@ -42,6 +43,14 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 new executeRegister(RegisterActivity.this).execute();
+            }
+        });
+        tvBack=(TextView)findViewById(R.id.textView6);
+        tvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RegisterActivity.this,BeginActivity.class);
+                startActivity(intent);
             }
         });
     }

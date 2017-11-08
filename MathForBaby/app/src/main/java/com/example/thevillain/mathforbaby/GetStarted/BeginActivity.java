@@ -305,50 +305,49 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
             this.user = user;
         }
 
-        @Override
-        protected String doInBackground(Void... params) {
-            // TODO Auto-generated method stub
+            @Override
+            protected String doInBackground (Void...params){
+                // TODO Auto-generated method stub
 
-            String successful = null;
-            try {
-                avt = user.getAvatar();
-                fname = user.getFullname();
-                uname = user.getUsername();
-                pword = user.getPassword();
-                hscore = user.getHighscore();
-                acc_type = user.getAccount_type();
+                String successful = null;
+                try {
+                    avt = user.getAvatar();
+                    fname = user.getFullname();
+                    uname = user.getUsername();
+                    pword = user.getPassword();
+                    hscore = user.getHighscore();
+                    acc_type = user.getAccount_type();
 
-                myfunctions = new MyFunctions(getApplicationContext());
-                JSONObject jsonobject = myfunctions.registerUser(avt, fname, uname, pword, hscore, acc_type);
-                successful = jsonobject.getString("successful");
+                    myfunctions = new MyFunctions(getApplicationContext());
+                    JSONObject jsonobject = myfunctions.registerUser(avt, fname, uname, pword, hscore, acc_type);
+                    successful = jsonobject.getString("successful");
 
-            } catch (Exception e) {
+                } catch (Exception e) {
+                }
+                return successful;
             }
-            return successful;
-        }
 
-        @Override
-        protected void onPostExecute(String successful) {
-            // TODO Auto-generated method stub
-            super.onPostExecute(successful);
-            if (Integer.parseInt(successful) == 1) {
-                Intent intent = new Intent(BeginActivity.this, MainActivity.class);
-                intent.putExtra("KEYCODE",acc_type);
-                intent.putExtra("avtS",avt);
-                intent.putExtra("fnameS",fname);
-                intent.putExtra("unameS",fname);
-                startActivity(intent);
-            } else {
-                Intent intent = new Intent(BeginActivity.this, MainActivity.class);
-                intent.putExtra("KEYCODE",acc_type);
-                intent.putExtra("avtS",avt);
-                intent.putExtra("fnameS",fname);
-                intent.putExtra("unameS",fname);
-                startActivity(intent);
+            @Override
+            protected void onPostExecute (String successful){
+                // TODO Auto-generated method stub
+                super.onPostExecute(successful);
+                if (Integer.parseInt(successful) == 1) {
+                    Intent intent = new Intent(BeginActivity.this, MainActivity.class);
+                    intent.putExtra("KEYCODE", acc_type);
+                    intent.putExtra("avtS", avt);
+                    intent.putExtra("fnameS", fname);
+                    intent.putExtra("unameS", fname);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(BeginActivity.this, MainActivity.class);
+                    intent.putExtra("KEYCODE", acc_type);
+                    intent.putExtra("avtS", avt);
+                    intent.putExtra("fnameS", fname);
+                    intent.putExtra("unameS", fname);
+                    startActivity(intent);
+                }
             }
         }
-
-    }
 
     class executeRegister extends AsyncTask<Void, Void, String> {
         String avt, fname, uname, pword, hscore, acc_type;
@@ -387,19 +386,19 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
             super.onPostExecute(successful);
             if (Integer.parseInt(successful) == 1) {
                 Intent intent = new Intent(BeginActivity.this, MainActivity.class);
-                intent.putExtra("avtS",avt);
-                intent.putExtra("fnameS",fname);
-                intent.putExtra("unameS",fname);
-                startActivity(intent);
+                intent.putExtra("avtS", avt);
+                intent.putExtra("fnameS", fname);
+                intent.putExtra("unameS", fname);
+                //startActivity(intent);
+
             } else {
                 Intent intent = new Intent(BeginActivity.this, MainActivity.class);
-                intent.putExtra("avtS",avt);
-                intent.putExtra("fnameS",fname);
-                intent.putExtra("unameS",fname);
-                startActivity(intent);
+                intent.putExtra("avtS", avt);
+                intent.putExtra("fnameS", fname);
+                intent.putExtra("unameS", fname);
+                //startActivity(intent);
             }
         }
 
-    }
-
+}
 }

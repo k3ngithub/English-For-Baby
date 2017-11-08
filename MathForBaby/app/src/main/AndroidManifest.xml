@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GetStarted.BeginActivity">
+        <activity android:name=".mainfunction.FlashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,7 +47,9 @@
         </activity>
         <activity android:name=".mainfunction.UnitActivity" />
         <activity android:name=".mainfunction.ExamActivity" />
-        <activity android:name=".mainfunction.NewUnitActivity"></activity>
+        <activity android:name=".mainfunction.NewUnitActivity" />
+        <activity android:name=".GetStarted.BeginActivity"></activity>
+        <activity android:name=".mainfunction.AchievementsActivity"></activity>
     </application>
 
 </manifest>
