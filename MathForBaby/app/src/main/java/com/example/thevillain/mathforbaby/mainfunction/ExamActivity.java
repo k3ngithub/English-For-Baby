@@ -1,6 +1,7 @@
 package com.example.thevillain.mathforbaby.mainfunction;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -39,12 +40,17 @@ public class ExamActivity extends AppCompatActivity {
     ProgressDialog pg_dialog;
     String idrandom;
     int rand;
+    int randdapan;
     int count;
     String s;
     int i1;
     String histr;
+    String chuoivitridapan;
     int so;
     List<Integer> list;
+    List<Integer> listdapan;
+    int Score;
+    String radiobuttonResultans;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +61,9 @@ public class ExamActivity extends AppCompatActivity {
         arr_exam = new ArrayList<Exams>();
 
         randomdata();
+
+
+        //Ket thuc radio button
 
 
         final TextView tvss = (TextView) findViewById(R.id.textViewTitleExam);
@@ -74,8 +83,12 @@ public class ExamActivity extends AppCompatActivity {
                 Toast.makeText(ExamActivity.this, so+"", Toast.LENGTH_LONG).show();
                 so = so + 1;
 
+
+
                 if(so == 9){
-//                    Intent i = new Intent(ExamActivity.this, )
+                    Intent i = new Intent(ExamActivity.this, ExamActivity.class);
+
+                    startActivity(i);
 
                 }
 
@@ -104,15 +117,37 @@ public class ExamActivity extends AppCompatActivity {
 
     }
 
+    private void randomdapan(){
+//
+        listdapan = new ArrayList<Integer>();
+        for(int i = 0; i < 10;)
+        {
+            randdapan = ((int)(Math.random() * 10)) + 1;
+
+            if(!listdapan.contains(randdapan))
+            {
+                listdapan.add(randdapan);
+                int vitridapan = listdapan.get(i);
+                chuoivitridapan = String.valueOf(vitridapan);
+                setdata();
+                i++;
+            }
+        }
+        new getDetail(histr).execute();
+
+    }
 
 
-//    private void setdata() {
+
+    private void setdata() {
 //        Picasso.with(ExamActivity.this).load(exam.getImage()).into(imageViewExam);
 //
 //        radioButton1.setText(exam.getAnswer1());
 //        radioButton2.setText(exam.getAnswer2());
 //        radioButtonResultans.setText(exam.getResultans());
-//    }
+//
+//
+    }
 
 
     public void init(){
@@ -203,5 +238,90 @@ public class ExamActivity extends AppCompatActivity {
         }
     }
 
+    //Class Random radio button
+    class getDetailrandomradio extends AsyncTask<Void,Void,Integer>
 
+    {
+        MyFunctions myfunctions;
+        String id;
+
+        public getDetailrandomradio(String id) {
+            this.id = id;
+        }
+
+        // Check for success tag
+        @Override
+        protected Integer doInBackground(Void... arg0) {
+            // TODO Auto-generated method stub
+            Integer thanhcong = 0;
+            //getall
+            try {
+                myfunctions = new MyFunctions(getApplicationContext());
+                JSONObject jsonobject = myfunctions.getExamDetail(id);
+                thanhcong = jsonobject.getInt("thanhcong");
+                //doc tat ca du lieu tu json bo vao ArrayList
+                if (thanhcong == 1)//thanh cong
+                {
+                    //truy mang ten sanpham trong json
+                    JSONArray jsonarray = jsonobject.getJSONArray("exam");
+                    //duyet mang
+                    for (int i = 0; i < jsonarray.length(); i++) {
+                        JSONObject item = jsonarray.getJSONObject(i);
+                        final String id = item.getString("id");
+                        exam_img = item.getString("image");
+                        exam_question = item.getString("questions");
+                        exam_answer1 = item.getString("answer1");
+                        exam_answer2 = item.getString("answer2");
+                        exam_resultans = item.getString("resultans");
+                        exam_score = item.getString("score");
+
+                        exam = new Exams(id, exam_img, exam_question, exam_answer1, exam_answer2, exam_resultans, exam_score);
+
+                    }
+                } else //that bai
+                {
+                }
+
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return thanhcong;
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+            pg_dialog = new ProgressDialog(ExamActivity.this);
+            pg_dialog.setMessage("dang nap du lieu");
+            pg_dialog.setIndeterminate(false);
+            pg_dialog.setCancelable(false);//co the cancel bang phim back
+            pg_dialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Integer thanhcong) {
+            // TODO Auto-generated method stub
+            super.onPostExecute(thanhcong);
+
+
+            pg_dialog.dismiss();
+            //Toast.makeText(ExamActivity.this, exam_img + "", Toast.LENGTH_SHORT).show();
+            Picasso.with(ExamActivity.this).load(exam_img).into(imageViewExam);
+//            if(id == 0){
+//                radioButton1.setText(exam_answer1);
+//                radioButton2.setText(exam_answer2);
+//                radioButtonResultans.setText(exam_resultans);
+//            }
+//            if()
+            radioButton1.setText(exam_answer1);
+            radioButton2.setText(exam_answer2);
+            radioButtonResultans.setText(exam_resultans);
+
+            radiobuttonResultans = exam_resultans.toString();
+        }
+    }
+    //Kết thúc class random radio button
 }
