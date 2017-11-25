@@ -45,8 +45,6 @@ public class UnitActivity extends AppCompatActivity {
         String idreci = bundle.getString("send");
 
         new getDetail(idreci).execute();
-        //Toast.makeText(this, "D"+idreci, Toast.LENGTH_SHORT).show();
-        //Textview T.Anh
         textLesson1 = (TextView)findViewById(R.id.textLesson1);
         textLesson2 = (TextView)findViewById(R.id.textLesson2);
         textLesson3 = (TextView)findViewById(R.id.textLesson3);
@@ -56,9 +54,6 @@ public class UnitActivity extends AppCompatActivity {
         imgLess2 = (ImageView)findViewById(R.id.imageLesson2);
         imgLess3 = (ImageView)findViewById(R.id.imageLesson3);
 
-//        Picasso.with(getApplicationContext()).load(unit.getLesson1_img()).into(imgLess1);
-//        Picasso.with(getApplicationContext()).load(unit.getLesson2_img()).into(imgLess2);
-//        Picasso.with(getApplicationContext()).load(unit.getLesson3_img()).into(imgLess3);
         toSpeech = new TextToSpeech(UnitActivity.this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -69,6 +64,7 @@ public class UnitActivity extends AppCompatActivity {
                 }
             }
         });
+
 
 
     }

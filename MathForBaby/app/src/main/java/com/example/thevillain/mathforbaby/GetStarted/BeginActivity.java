@@ -3,7 +3,6 @@ package com.example.thevillain.mathforbaby.GetStarted;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -81,6 +80,7 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
         btnGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 new executeLogin(BeginActivity.this).execute();
             }
         });
@@ -191,10 +191,7 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
-            Uri uri = acct.getPhotoUrl();
-            String imgUrl;
-            imgUrl = uri.toString();
-            avatar = imgUrl;
+            avatar = acct.getPhotoUrl().toString();
             fullname = acct.getDisplayName().toString();
             username = acct.getEmail().toString();
             password = "none";

@@ -17,8 +17,9 @@ public class AchievementsActivity extends AppCompatActivity {
     LinearLayout l1,l2;
     Button btnClose;
     Animation uptodown,downtoup;
+    int score;
 
-    TextView tvScore = (TextView) findViewById(R.id.tvScore);
+    TextView tvScore;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +32,8 @@ public class AchievementsActivity extends AppCompatActivity {
         l1.setAnimation(uptodown);
         l2.setAnimation(downtoup);
 
+        tvScore = (TextView) findViewById(R.id.tvScore);
+
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,6 +41,15 @@ public class AchievementsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Intent i = getIntent();
+
+        String score = i.getStringExtra("Score");
+
+        tvScore.setText(score);
+
+
+        //String name = i.getStringExtra("name");
 
         //tvScore.setText("");
 

@@ -15,11 +15,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-import com.example.thevillain.mathforbaby.mainfunction.ExamActivity;
-
 import com.example.thevillain.mathforbaby.GetStarted.RegisterActivity;
 import com.example.thevillain.mathforbaby.mainfunction.AchievementsActivity;
+import com.example.thevillain.mathforbaby.mainfunction.ExamActivity;
 import com.example.thevillain.mathforbaby.mainfunction.LearningActivity;
 import com.squareup.picasso.Picasso;
 

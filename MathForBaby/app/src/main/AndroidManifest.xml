@@ -48,8 +48,9 @@
         <activity android:name=".mainfunction.UnitActivity" />
         <activity android:name=".mainfunction.ExamActivity" />
         <activity android:name=".mainfunction.NewUnitActivity" />
-        <activity android:name=".GetStarted.BeginActivity"></activity>
-        <activity android:name=".mainfunction.AchievementsActivity"></activity>
+        <activity android:name=".GetStarted.BeginActivity" />
+        <activity android:name=".mainfunction.AchievementsActivity" />
+        <activity android:name=".mainfunction.ShareActivity"></activity>
     </application>
 
 </manifest>

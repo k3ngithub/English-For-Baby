@@ -14,6 +14,7 @@ public class MyFunctions {
     JSONParser jsonparser;
 
     private final String ip = "http://169.254.97.73:9091";
+
     String loginurl=ip+"/webAPI_php/index.php";
     String registerurl=ip+"/webAPI_php/index.php";
     //Get All
@@ -34,7 +35,7 @@ public class MyFunctions {
     String updateunit=ip+"/webAPI_php/updateunit.php";
     String updateexam=ip+"/webAPI_php/updateexam.php";
     //Deleta
-    String deleteunit=ip+"/webAPI_php/deleteunit.php";
+    String deleteunit=ip+"/webAPI_php/deleteunits.php";
     String deleteexam=ip+"/webAPI_php/deleteexam.php";
 
     String login_tag="login";
@@ -141,7 +142,6 @@ public class MyFunctions {
         return jobj;
     }
 
-
     //Detail
     public JSONObject getExamDetail(String id) {
         List<NameValuePair> cacdoiso = new ArrayList<NameValuePair>();
@@ -231,9 +231,9 @@ public class MyFunctions {
     //Delete
     public JSONObject deleteUnit(String id)
     {
-        List<NameValuePair> productID = new ArrayList<NameValuePair>();
-        productID.add(new BasicNameValuePair("id", id));
-        JSONObject jobj=jsonparser.getJSONFromUrl(deleteunit, productID);
+        List<NameValuePair> unitID = new ArrayList<NameValuePair>();
+        unitID.add(new BasicNameValuePair("id", id));
+        JSONObject jobj=jsonparser.getJSONFromUrl(deleteunit, unitID);
         return jobj;
     }
 
