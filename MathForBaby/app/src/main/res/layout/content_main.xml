@@ -92,8 +92,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/study"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true" />
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"/>
 
                 <TextView
                     android:id="@+id/textView7"
@@ -123,8 +124,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/exam"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true" />
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp" />
 
                 <TextView
                     android:id="@+id/textViewthi"
@@ -159,9 +161,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/act"
-                    android:layout_centerVertical="true"
+                    android:layout_alignParentTop="true"
                     android:layout_alignLeft="@+id/textViewthanhtich"
-                    android:layout_alignStart="@+id/textViewthanhtich" />
+                    android:layout_alignStart="@+id/textViewthanhtich"
+                    android:layout_marginTop="10dp" />
 
                 <TextView
                     android:id="@+id/textViewthanhtich"
@@ -188,8 +191,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/share"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true" />
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp" />
 
                 <TextView
                     android:id="@+id/textViewshare"

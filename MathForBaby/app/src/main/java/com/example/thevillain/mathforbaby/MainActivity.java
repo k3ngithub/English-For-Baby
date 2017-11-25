@@ -14,7 +14,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+<<<<<<< HEAD
 
+=======
+import android.widget.Toast;
+
+import com.example.thevillain.mathforbaby.GetStarted.BeginActivity;
+>>>>>>> badc3c9853e1b6882fb328b059a624ab878dc47a
 import com.example.thevillain.mathforbaby.GetStarted.RegisterActivity;
 import com.example.thevillain.mathforbaby.mainfunction.AchievementsActivity;
 import com.example.thevillain.mathforbaby.mainfunction.ExamActivity;
@@ -24,8 +30,8 @@ import com.squareup.picasso.Picasso;
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener,NavigationView.OnNavigationItemSelectedListener {
 
-    TextView txtName;
-    ImageView imgLearn, imgExam, imgAchie, imgShare, imgAvt;
+    TextView txtName, txtFullnameNav, txtUsernameNav;
+    ImageView imgLearn, imgExam, imgAchie, imgShare, imgAvt, imgAvtNav;
     String avatar, fullname, username,highscore, account_type, KEYCODE;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +47,6 @@ public class MainActivity extends AppCompatActivity
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
 //
-                Intent i = new Intent(MainActivity.this, ExamActivity.class);
-                startActivity(i);
             }
         });
 
@@ -60,6 +64,20 @@ public class MainActivity extends AppCompatActivity
         imgLearn.setOnClickListener(this);
 
         getData();
+        imgAchie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AchievementsActivity.class);
+                startActivity(intent);
+            }
+        });
+        imgExam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ExamActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void getData() {
@@ -67,6 +85,7 @@ public class MainActivity extends AppCompatActivity
         b = getIntent().getExtras();
         KEYCODE = b.getString("KEYCODE");
         if(KEYCODE.equals("normal")) {
+            txtName.setText(fullname);
             Picasso.with(getApplicationContext()).load(RegisterActivity.normalUserAvt).into(imgAvt);
         } else{
             avatar = b.getString("avtS");
@@ -75,13 +94,6 @@ public class MainActivity extends AppCompatActivity
             txtName.setText(fullname);
             Picasso.with(getApplicationContext()).load(avatar).into(imgAvt);
         }
-        imgAchie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, AchievementsActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     private void init() {
@@ -91,6 +103,9 @@ public class MainActivity extends AppCompatActivity
         imgShare = (ImageView) findViewById(R.id.imgShare);
         imgAvt = (ImageView) findViewById(R.id.imgAvt);
         txtName = (TextView) findViewById(R.id.txtName);
+        txtFullnameNav = (TextView) findViewById(R.id.txtFnameNav);
+        txtUsernameNav = (TextView) findViewById(R.id.txtUnameNav);
+        imgAvtNav = (ImageView) findViewById(R.id.imgAvtNav);
     }
 
     @Override
@@ -131,18 +146,12 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if (id == R.id.nav_aboutUs) {
+            Toast.makeText(this, "About us!!!!", Toast.LENGTH_SHORT).show();
+        } else if(id == R.id.nav_LogOut){
+            Intent intent = new Intent(getApplicationContext(), BeginActivity.class);
+            startActivity(intent);
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

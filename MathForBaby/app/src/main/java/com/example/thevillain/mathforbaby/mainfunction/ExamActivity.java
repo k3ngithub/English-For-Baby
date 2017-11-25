@@ -15,7 +15,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.thevillain.mathforbaby.Adapter.Exams;
+import com.example.thevillain.mathforbaby.Objects.Exams;
 import com.example.thevillain.mathforbaby.R;
 import com.example.thevillain.mathforbaby.SupportClass.MyFunctions;
 import com.squareup.picasso.Picasso;
@@ -75,6 +75,7 @@ public class ExamActivity extends AppCompatActivity {
 
                     if(selectedRusult.equals(exam_resultans)){
                         score = score + 1;
+<<<<<<< HEAD
                         scorestr = String.valueOf(score);
                         Toast.makeText(ExamActivity.this, "Đúng luôn!!!"+ count, Toast.LENGTH_SHORT).show();
                     }
@@ -82,8 +83,15 @@ public class ExamActivity extends AppCompatActivity {
                         Intent i = new Intent(ExamActivity.this, AchievementsActivity.class);
 
                         i.putExtra("Score",scorestr);
+=======
+                    }
+                    if (count == 9) {
+                        Intent i = new Intent(ExamActivity.this, AchievementsActivity.class);
+                        i.putExtra("Score",String.valueOf(score));
+>>>>>>> badc3c9853e1b6882fb328b059a624ab878dc47a
                         startActivity(i);
                         Toast.makeText(ExamActivity.this, "Điểm: "+ score, Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 }
             }
@@ -189,6 +197,7 @@ public class ExamActivity extends AppCompatActivity {
                     i++;
                 }
             }
+
             radioButton1.setChecked(false);
             radioButton2.setChecked(false);
             radioButtonResultans.setChecked(false);
@@ -212,6 +221,7 @@ public class ExamActivity extends AppCompatActivity {
             });
         }
     }
+<<<<<<< HEAD
 
     public void readingQuestion(View view) {
         toSpeech.speak(exam_question, TextToSpeech.QUEUE_FLUSH, null);
@@ -225,5 +235,7 @@ public class ExamActivity extends AppCompatActivity {
             toSpeech.shutdown();
         }
     }
+=======
+>>>>>>> badc3c9853e1b6882fb328b059a624ab878dc47a
 }
 

@@ -12,9 +12,13 @@ import java.util.List;
 
 public class MyFunctions {
     JSONParser jsonparser;
+<<<<<<< HEAD
 
     private final String ip = "http://169.254.97.73:9091";
 
+=======
+    private final String ip = "http://10.200.202.34";
+>>>>>>> badc3c9853e1b6882fb328b059a624ab878dc47a
     String loginurl=ip+"/webAPI_php/index.php";
     String registerurl=ip+"/webAPI_php/index.php";
     //Get All

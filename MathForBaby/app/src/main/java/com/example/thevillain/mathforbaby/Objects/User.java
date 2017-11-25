@@ -32,6 +32,15 @@ public class User {
         this.account_type = account_type;
     }
 
+    public User(){
+        this.avatar = "";
+        this.fullname = "";
+        this.username = "";
+        this.password = "";
+        this.highscore = "0";
+        this.account_type = "";
+    }
+
     public String getId() {
         return id;
     }

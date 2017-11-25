@@ -4,6 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
+=======
+
+>>>>>>> badc3c9853e1b6882fb328b059a624ab878dc47a
     android:background="@drawable/bgv2"
     tools:context="com.example.thevillain.mathforbaby.mainfunction.ExamActivity">
 
@@ -20,23 +24,31 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
+        android:textColor="#FFF"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp" />
 
     <ImageView
         android:id="@+id/imageViewExam"
         android:layout_width="0dp"
+<<<<<<< HEAD
         android:layout_height="300dp"
         app:srcCompat="@drawable/act"
         android:layout_marginTop="50dp"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitleExam"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginStart="8dp"
+=======
+        android:layout_height="250dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintHorizontal_bias="0.0" />
+>>>>>>> badc3c9853e1b6882fb328b059a624ab878dc47a
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitleExam"
+        app:srcCompat="@drawable/act" />
 
     <RadioGroup
         android:id="@+id/radioGroup"
@@ -59,24 +71,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+<<<<<<< HEAD
             android:textSize="10dp"
             android:textColor="#fff" />
+=======
+            android:textColor="#FFF"
+            android:text="Question one" />
+>>>>>>> badc3c9853e1b6882fb328b059a624ab878dc47a
 
         <RadioButton
             android:id="@+id/radioQues2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+<<<<<<< HEAD
             android:textColor="#fff"
             android:textSize="10dp"/>
+=======
+            android:textColor="#FFF"
+            android:text="Question two" />
+>>>>>>> badc3c9853e1b6882fb328b059a624ab878dc47a
 
         <RadioButton
             android:id="@+id/radioQue3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+<<<<<<< HEAD
             android:textSize="10dp"
             android:textColor="#fff" />
+=======
+            android:textColor="#FFF"
+            android:text="Question three" />
+>>>>>>> badc3c9853e1b6882fb328b059a624ab878dc47a
     </RadioGroup>
 
     <Button
