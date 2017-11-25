@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.thevillain.mathforbaby.Adapter.Units;
+import com.example.thevillain.mathforbaby.Objects.Units;
 import com.example.thevillain.mathforbaby.R;
 import com.example.thevillain.mathforbaby.SupportClass.MyFunctions;
 import com.squareup.picasso.Picasso;
@@ -25,14 +25,15 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class UnitActivity extends AppCompatActivity {
-    TextView textLesson1,textLesson2,textLesson3;
-    ImageView imgLess1,imgLess2,imgLess3;
+    TextView textLesson1, textLesson2, textLesson3;
+    ImageView imgLess1, imgLess2, imgLess3;
     String text;
     ProgressDialog pg_dialog;
     ArrayList<Units> arr_unit;
     int result;
     TextToSpeech toSpeech;
     Units unit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,14 +46,14 @@ public class UnitActivity extends AppCompatActivity {
         String idreci = bundle.getString("send");
 
         new getDetail(idreci).execute();
-        textLesson1 = (TextView)findViewById(R.id.textLesson1);
-        textLesson2 = (TextView)findViewById(R.id.textLesson2);
-        textLesson3 = (TextView)findViewById(R.id.textLesson3);
+        textLesson1 = (TextView) findViewById(R.id.textLesson1);
+        textLesson2 = (TextView) findViewById(R.id.textLesson2);
+        textLesson3 = (TextView) findViewById(R.id.textLesson3);
 
         //Image
-        imgLess1 = (ImageView)findViewById(R.id.imageLesson1);
-        imgLess2 = (ImageView)findViewById(R.id.imageLesson2);
-        imgLess3 = (ImageView)findViewById(R.id.imageLesson3);
+        imgLess1 = (ImageView) findViewById(R.id.imageLesson1);
+        imgLess2 = (ImageView) findViewById(R.id.imageLesson2);
+        imgLess3 = (ImageView) findViewById(R.id.imageLesson3);
 
         toSpeech = new TextToSpeech(UnitActivity.this, new TextToSpeech.OnInitListener() {
             @Override
@@ -67,11 +68,13 @@ public class UnitActivity extends AppCompatActivity {
 
 
     }
-    class getDetail extends AsyncTask<Void,Void,Integer>
+
+    class getDetail extends AsyncTask<Void, Void, Integer>
 
     {
         MyFunctions myfunctions;
         String id;
+
         public getDetail(String id) {
             this.id = id;
         }
@@ -83,19 +86,19 @@ public class UnitActivity extends AppCompatActivity {
             Integer thanhcong = 0;
             //getall
             try {
-                myfunctions=new MyFunctions(getApplicationContext());
-                JSONObject jsonobject=myfunctions.getDetail(id);
+                myfunctions = new MyFunctions(getApplicationContext());
+                JSONObject jsonobject = myfunctions.getDetail(id);
                 thanhcong = jsonobject.getInt("thanhcong");
                 //doc tat ca du lieu tu json bo vao ArrayList
-                if(thanhcong==1)//thanh cong
+                if (thanhcong == 1)//thanh cong
                 {
                     //truy mang ten sanpham trong json
-                    JSONArray jsonarray=jsonobject.getJSONArray("unit");
+                    JSONArray jsonarray = jsonobject.getJSONArray("unit");
                     //duyet mang
-                    for(int i=0;i<jsonarray.length();i++) {
-                        JSONObject item=jsonarray.getJSONObject(i);
-                        String id=item.getString("id");
-                        String unit_name=item.getString("unit_name");
+                    for (int i = 0; i < jsonarray.length(); i++) {
+                        JSONObject item = jsonarray.getJSONObject(i);
+                        String id = item.getString("id");
+                        String unit_name = item.getString("unit_name");
                         String unit_img = item.getString("unit_img");
                         String lesson1_img = item.getString("lesson1_img");
                         String lesson1 = item.getString("lesson1");
@@ -105,8 +108,7 @@ public class UnitActivity extends AppCompatActivity {
                         String lesson3 = item.getString("lesson3");
                         unit = new Units(id, unit_name, unit_img, lesson1_img, lesson1, lesson2_img, lesson2, lesson3_img, lesson3);
                     }
-                }
-                else //that bai
+                } else //that bai
                 {
                 }
 
@@ -117,16 +119,18 @@ public class UnitActivity extends AppCompatActivity {
             return thanhcong;
 
         }
+
         @Override
         protected void onPreExecute() {
             // TODO Auto-generated method stub
             super.onPreExecute();
-            pg_dialog=new ProgressDialog(UnitActivity.this);
+            pg_dialog = new ProgressDialog(UnitActivity.this);
             pg_dialog.setMessage("dang nap du lieu");
             pg_dialog.setIndeterminate(false);
             pg_dialog.setCancelable(false);//co the cancel bang phim back
             pg_dialog.show();
         }
+
         @Override
         protected void onPostExecute(Integer thanhcong) {
             // TODO Auto-generated method stub
@@ -152,7 +156,7 @@ public class UnitActivity extends AppCompatActivity {
             case R.id.imageVoice1:
                 if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                     Toast.makeText(this, "ABC", Toast.LENGTH_SHORT).show();
-                    Log.d("ABC",text);
+                    Log.d("ABC", text);
                 } else {
                     text = textLesson1.getText().toString();
                     toSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
@@ -160,6 +164,7 @@ public class UnitActivity extends AppCompatActivity {
                 break;
         }
     }
+
     //speak for lesson 2
     public void TIS2(View view) {
         switch (view.getId()) {
@@ -173,6 +178,7 @@ public class UnitActivity extends AppCompatActivity {
                 break;
         }
     }
+
     //speak for lesson 3
     public void TIS3(View view) {
         switch (view.getId()) {
@@ -186,6 +192,7 @@ public class UnitActivity extends AppCompatActivity {
                 break;
         }
     }
+
     protected void onDeastroy() {
         super.onDestroy();
         if (toSpeech != null) {

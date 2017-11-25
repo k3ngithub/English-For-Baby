@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -58,6 +59,7 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
     int currentHour, currentMinute;
     private ProgressDialog mProgressDialog;
     User user;
+    ProgressDialog pg_dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +124,7 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    private void signOut() {
+    public void signOut() {
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
                     @Override
@@ -164,7 +166,7 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
                     highscore = "0";
                     account_type = "facebook";
                     User user = new User(avatar, fullname, username, password, highscore, account_type);
-                    new executeSignUp(user).execute();
+                    new executeRegister(getApplicationContext(), user).execute();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -198,7 +200,7 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
             highscore = "0";
             account_type = "google";
             User user = new User(avatar, fullname, username, password, highscore, account_type);
-            new executeSignUp(user).execute();
+            new executeRegister(getApplicationContext(), user).execute();
 
         } else {
         }
@@ -280,7 +282,7 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
             super.onPostExecute(successful);
             if (Integer.parseInt(successful) == 1) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("KEYCODE","normal");
+                intent.putExtra("KEYCODE", "normal");
                 startActivity(intent);
                 finish();
 
@@ -293,66 +295,131 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
 
     }
 
-    class executeSignUp extends AsyncTask<Void, Void, String> {
+//    class executeSignUp extends AsyncTask<Void, Void, String> {
+//        String avt, fname, uname, pword, hscore, acc_type;
+//        MyFunctions myfunctions;
+//        User user;
+//
+//        public executeSignUp(User user) {
+//            this.user = user;
+//        }
+//
+//        @Override
+//        protected String doInBackground(Void... params) {
+//            // TODO Auto-generated method stub
+//
+//            String successful = null;
+//            try {
+//                avt = user.getAvatar();
+//                fname = user.getFullname();
+//                uname = user.getUsername();
+//                pword = user.getPassword();
+//                hscore = user.getHighscore();
+//                acc_type = user.getAccount_type();
+//
+//                myfunctions = new MyFunctions(getApplicationContext());
+//                JSONObject jsonobject = myfunctions.registerUser(avt, fname, uname, pword, hscore, acc_type);
+//                successful = jsonobject.getString("successful");
+//
+//            } catch (Exception e) {
+//            }
+//            return successful;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String successful) {
+//            // TODO Auto-generated method stub
+//            super.onPostExecute(successful);
+//            if (Integer.parseInt(successful) == 1) {
+////                Intent intent = new Intent(BeginActivity.this, MainActivity.class);
+////                intent.putExtra("KEYCODE", acc_type);
+////                intent.putExtra("avtS", avt);
+////                intent.putExtra("fnameS", fname);
+////                intent.putExtra("unameS", fname);
+////                startActivity(intent);
+//                Toast.makeText(BeginActivity.this, "Thành công", Toast.LENGTH_SHORT).show();
+//            } else {
+////                Intent intent = new Intent(BeginActivity.this, MainActivity.class);
+////                intent.putExtra("KEYCODE", acc_type);
+////                intent.putExtra("avtS", avt);
+////                intent.putExtra("fnameS", fname);
+////                intent.putExtra("unameS", fname);
+////                startActivity(intent);
+//            }
+//        }
+//    }
+
+//    class executeRegister extends AsyncTask<Void, Void, String> {
+//        String avt, fname, uname, pword, hscore, acc_type;
+//        MyFunctions myfunctions;
+//        User user;
+//
+//        public executeRegister(User user) {
+//            this.user = user;
+//        }
+//
+//        @Override
+//        protected String doInBackground(Void... params) {
+//            // TODO Auto-generated method stub
+//
+//            String successful = null;
+//            try {
+//                avt = user.getAvatar();
+//                fname = user.getFullname();
+//                uname = user.getUsername();
+//                pword = user.getPassword();
+//                hscore = user.getHighscore();
+//                acc_type = user.getAccount_type();
+//
+//                myfunctions = new MyFunctions(getApplicationContext());
+//                JSONObject jsonobject = myfunctions.registerUser(avt, fname, uname, pword, hscore, acc_type);
+//                successful = jsonobject.getString("successful");
+//
+//            } catch (Exception e) {
+//            }
+//            return successful;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String successful) {
+//            // TODO Auto-generated method stub
+//            super.onPostExecute(successful);
+//            if (Integer.parseInt(successful) == 1) {
+//                Intent intent = new Intent(BeginActivity.this, MainActivity.class);
+//                intent.putExtra("avtS", avt);
+//                intent.putExtra("fnameS", fname);
+//                intent.putExtra("unameS", uname);
+//                //startActivity(intent);
+//                Toast.makeText(BeginActivity.this, "Thành công", Toast.LENGTH_SHORT).show();
+//
+//            } else {
+//                Intent intent = new Intent(BeginActivity.this, MainActivity.class);
+//                intent.putExtra("avtS", avt);
+//                intent.putExtra("fnameS", fname);
+//                intent.putExtra("unameS", uname);
+//                //startActivity(intent);
+//                Toast.makeText(BeginActivity.this, "thất công"+avt + fname + uname + highscore + acc_type, Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//
+//    }
+
+    class executeRegister extends AsyncTask<Void,Void,String>
+    {
         String avt, fname, uname, pword, hscore, acc_type;
         MyFunctions myfunctions;
+        Context c;
         User user;
 
-        public executeSignUp(User user) {
+        public executeRegister(Context c, User user) {
+            this.c = c;
             this.user = user;
-        }
-
-            @Override
-            protected String doInBackground (Void...params){
-                // TODO Auto-generated method stub
-
-                String successful = null;
-                try {
-                    avt = user.getAvatar();
-                    fname = user.getFullname();
-                    uname = user.getUsername();
-                    pword = user.getPassword();
-                    hscore = user.getHighscore();
-                    acc_type = user.getAccount_type();
-
-                    myfunctions = new MyFunctions(getApplicationContext());
-                    JSONObject jsonobject = myfunctions.registerUser(avt, fname, uname, pword, hscore, acc_type);
-                    successful = jsonobject.getString("successful");
-
-                } catch (Exception e) {
-                }
-                return successful;
-            }
-
-            @Override
-            protected void onPostExecute (String successful){
-                // TODO Auto-generated method stub
-                super.onPostExecute(successful);
-                if (Integer.parseInt(successful) == 1) {
-                    Intent intent = new Intent(BeginActivity.this, MainActivity.class);
-                    intent.putExtra("KEYCODE", acc_type);
-                    intent.putExtra("avtS", avt);
-                    intent.putExtra("fnameS", fname);
-                    intent.putExtra("unameS", fname);
-                    startActivity(intent);
-                } else {
-                    Intent intent = new Intent(BeginActivity.this, MainActivity.class);
-                    intent.putExtra("KEYCODE", acc_type);
-                    intent.putExtra("avtS", avt);
-                    intent.putExtra("fnameS", fname);
-                    intent.putExtra("unameS", fname);
-                    startActivity(intent);
-                }
-            }
-        }
-
-    class executeRegister extends AsyncTask<Void, Void, String> {
-        String avt, fname, uname, pword, hscore, acc_type;
-        MyFunctions myfunctions;
-        User user;
-
-        public executeRegister(User user) {
-            this.user = user;
+            avt = user.getAvatar();
+            fname = user.getFullname();
+            uname = user.getUsername();
+            pword = user.getPassword();
+            hscore = user.getHighscore();
+            acc_type = user.getAccount_type();
         }
 
         @Override
@@ -360,42 +427,52 @@ public class BeginActivity extends AppCompatActivity implements GoogleApiClient.
             // TODO Auto-generated method stub
 
             String successful = null;
-            try {
-                avt = user.getAvatar();
-                fname = user.getFullname();
-                uname = user.getUsername();
-                pword = user.getPassword();
-                hscore = user.getHighscore();
-                acc_type = user.getAccount_type();
-
-                myfunctions = new MyFunctions(getApplicationContext());
-                JSONObject jsonobject = myfunctions.registerUser(avt, fname, uname, pword, hscore, acc_type);
+            try
+            {
+                myfunctions=new MyFunctions(getApplicationContext());
+                JSONObject jsonobject=myfunctions.registerUser(avt, fname, uname, pword, hscore, acc_type);
                 successful = jsonobject.getString("successful");
-
-            } catch (Exception e) {
+                Log.d("ooooooooo123",avt+", "+fname+", "+uname+", "+pword+", "+hscore+", "+acc_type);
+            }catch(Exception e)
+            {
             }
             return successful;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+            pg_dialog = new ProgressDialog(BeginActivity.this);
+            pg_dialog.setMessage("Loading...");
+            pg_dialog.setIndeterminate(false);
+            pg_dialog.setCancelable(false);//co the cancel bang phim back
+            pg_dialog.show();
         }
 
         @Override
         protected void onPostExecute(String successful) {
             // TODO Auto-generated method stub
             super.onPostExecute(successful);
-            if (Integer.parseInt(successful) == 1) {
+            pg_dialog.dismiss();
+            if(Integer.parseInt(successful)==1)
+            {
                 Intent intent = new Intent(BeginActivity.this, MainActivity.class);
+                intent.putExtra("KEYCODE", acc_type);
                 intent.putExtra("avtS", avt);
                 intent.putExtra("fnameS", fname);
-                intent.putExtra("unameS", fname);
-                //startActivity(intent);
-
-            } else {
+                intent.putExtra("unameS", uname);
+                startActivity(intent);
+            }
+            else
+            {
                 Intent intent = new Intent(BeginActivity.this, MainActivity.class);
+                intent.putExtra("KEYCODE", acc_type);
                 intent.putExtra("avtS", avt);
                 intent.putExtra("fnameS", fname);
-                intent.putExtra("unameS", fname);
-                //startActivity(intent);
+                intent.putExtra("unameS", uname);
+                startActivity(intent);
             }
         }
-
-}
+    }
 }

@@ -23,8 +23,7 @@ import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.example.thevillain.mathforbaby.Adapter.ListAdapter;
-import com.example.thevillain.mathforbaby.Adapter.Units;
-import com.example.thevillain.mathforbaby.Objects.Unit;
+import com.example.thevillain.mathforbaby.Objects.Units;
 import com.example.thevillain.mathforbaby.R;
 import com.example.thevillain.mathforbaby.SupportClass.MyFunctions;
 
@@ -203,7 +202,7 @@ public class LearningActivity extends AppCompatActivity {
                                     String newLesson2 = txtLesson2.getText().toString();
                                     String newLessonImg3 = txtLessonImg3.getText().toString();
                                     String newLesson3 = txtLesson3.getText().toString();
-                                    Unit units = new Unit(ds_unit.get(position).getId(), newUnitName, newUnitImage, newLessonImg1,newLesson1,newLessonImg2,newLesson2,newLessonImg3,newLesson3);
+                                    Units units = new Units(ds_unit.get(position).getId(), newUnitName, newUnitImage, newLessonImg1,newLesson1,newLessonImg2,newLesson2,newLessonImg3,newLesson3);
                                     new updateunits(units).execute();
                                 }
                             });
@@ -312,9 +311,9 @@ public class LearningActivity extends AppCompatActivity {
 
         String id, nameunit,imgunit,imgless1,less1,imgless2,less2,imgless3,less3;
         MyFunctions myfunctions;
-        Unit unit;
+        Units unit;
 
-        public updateunits(Unit unit) {
+        public updateunits(Units unit) {
             this.unit = unit;
         }
 
@@ -332,7 +331,7 @@ public class LearningActivity extends AppCompatActivity {
                 imgless2 = unit.getLesson2_img();
                 less2 = unit.getLesson2();
                 imgless3 = unit.getLesson3_img();
-                less3 = unit.getLesson4();
+                less3 = unit.getLesson3();
 
                 myfunctions = new MyFunctions(getApplicationContext());
                 JSONObject jsonobject = myfunctions.updateUnit(id, nameunit, imgunit, imgless1,less1,imgless2,less2,imgless3,less3);

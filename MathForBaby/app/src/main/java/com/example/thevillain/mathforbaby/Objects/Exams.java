@@ -1,4 +1,4 @@
-package com.example.thevillain.mathforbaby.Adapter;
+package com.example.thevillain.mathforbaby.Objects;
 
 /**
  * Created by Huy on 05/11/2017.

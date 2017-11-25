@@ -93,7 +93,10 @@ public class RegisterActivity extends AppCompatActivity {
             super.onPostExecute(successful);
             if(Integer.parseInt(successful)==1)
             {
+                Intent intent = new Intent(getApplicationContext(), BeginActivity.class);
+                startActivity(intent);
                 Toast.makeText(c, "Registration completely!", Toast.LENGTH_SHORT).show();
+
             }
             else
             {

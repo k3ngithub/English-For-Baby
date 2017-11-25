@@ -1,6 +1,7 @@
 package com.example.thevillain.mathforbaby.mainfunction;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -12,7 +13,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.example.thevillain.mathforbaby.Adapter.Exams;
+import com.example.thevillain.mathforbaby.Objects.Exams;
 import com.example.thevillain.mathforbaby.R;
 import com.example.thevillain.mathforbaby.SupportClass.MyFunctions;
 import com.squareup.picasso.Picasso;
@@ -64,10 +65,13 @@ public class ExamActivity extends AppCompatActivity {
 
                     if(selectedRusult.equals(exam_resultans)){
                         score = score + 1;
-                        Toast.makeText(ExamActivity.this, "Đúng luôn!!!"+ count, Toast.LENGTH_SHORT).show();
                     }
                     if (count == 9) {
+                        Intent i = new Intent(ExamActivity.this, AchievementsActivity.class);
+                        i.putExtra("Score",String.valueOf(score));
+                        startActivity(i);
                         Toast.makeText(ExamActivity.this, "Điểm: "+ score, Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 }
             }
@@ -172,6 +176,7 @@ public class ExamActivity extends AppCompatActivity {
                     i++;
                 }
             }
+
             radioButton1.setChecked(false);
             radioButton2.setChecked(false);
             radioButtonResultans.setChecked(false);
@@ -181,6 +186,4 @@ public class ExamActivity extends AppCompatActivity {
             radioButtonResultans.setText(listAnserRandom.get(2));
         }
     }
-
-
 }

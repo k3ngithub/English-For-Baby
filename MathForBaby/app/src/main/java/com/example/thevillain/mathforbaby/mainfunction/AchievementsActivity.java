@@ -8,6 +8,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.thevillain.mathforbaby.MainActivity;
 import com.example.thevillain.mathforbaby.R;
@@ -16,11 +17,14 @@ public class AchievementsActivity extends AppCompatActivity {
     LinearLayout l1,l2;
     Button btnClose;
     Animation uptodown,downtoup;
+    TextView tvScore;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_achievements);
-        btnClose = (Button)findViewById(R.id.buttonClose);
+
+        tvScore = (TextView) findViewById(R.id.tvScore);
+        btnClose = (Button)findViewById(R.id.btnOut);
         l1 = (LinearLayout) findViewById(R.id.l1);
         l2 = (LinearLayout) findViewById(R.id.l2);
         uptodown = AnimationUtils.loadAnimation(this,R.anim.uptodown);
@@ -31,9 +35,15 @@ public class AchievementsActivity extends AppCompatActivity {
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AchievementsActivity.this, MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
+        Intent i = getIntent();
+
+        String score = i.getStringExtra("Score");
+
+        tvScore.setText(score);
     }
 }
